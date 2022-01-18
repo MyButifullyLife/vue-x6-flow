@@ -1,4 +1,4 @@
-# h5demo
+# vue-x6-flow
 
 ## Project setup
 ```
