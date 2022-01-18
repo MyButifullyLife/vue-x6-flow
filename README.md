@@ -19,6 +19,15 @@ vue2.x+ element +antv-x6
 
 ## 文档地址
 https://x6.antv.vision/zh/docs/api/graph/graph
+
+##效果图
+![image](https://user-images.githubusercontent.com/16436933/149902393-4a9fd58f-eadd-4a5f-af71-81076d0364d0.png)
+
+##流向动画
+![GIF 2022-1-18 16-51-01](https://user-images.githubusercontent.com/16436933/149902899-b630b119-c39f-45e9-b576-da8d571386be.gif)
+
+
+
 ## Project setup
 ```
 yarn install
