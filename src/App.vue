@@ -2,39 +2,39 @@
     <div id="coverCot" style="width: 100vw; height: 100vh;overflow: hidden">
         <section class="section-cot" style="width: 100%; height: 100%;">
 
-            <div id="container" @click.stop="hideFn"  >
-                <MenuBar v-if="showContextMenu" ref="menuBar" @callBack="contextMenuFn" />
+            <div id="container" @click.stop="hideFn">
+                <MenuBar v-if="showContextMenu" ref="menuBar" @callBack="contextMenuFn"/>
                 <header>
                     <el-tooltip class="item" effect="dark" content="项目" placement="bottom">
-                        <i class="el-icon-menu" @click="showDrawerFn()" />
+                        <i class="el-icon-menu" @click="showDrawerFn()"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="长按shift多选" placement="bottom">
-                        <i class="el-icon-crop" />
+                        <i class="el-icon-crop"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="放大" placement="bottom">
-                        <i class="el-icon-zoom-in" @click="zoomFn(0.2)" />
+                        <i class="el-icon-zoom-in" @click="zoomFn(0.2)"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="缩小" placement="bottom">
-                        <i class="el-icon-zoom-out" @click="zoomFn(-0.2)" />
+                        <i class="el-icon-zoom-out" @click="zoomFn(-0.2)"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="适应屏幕" placement="bottom">
-                        <i class="el-icon-full-screen" @click="centerFn" />
+                        <i class="el-icon-full-screen" @click="centerFn"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="执行" placement="bottom">
-                        <i class="el-icon-video-play" @click="startFn()" />
+                        <i class="el-icon-video-play" @click="startFn()"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="保存" placement="bottom">
-                        <i class="el-icon-upload" @click="saveFn()" />
+                        <i class="el-icon-upload" @click="saveFn()"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="加载保存页面" placement="bottom">
-                        <i class="el-icon-link" @click="loadFn()" />
+                        <i class="el-icon-link" @click="loadFn()"/>
                     </el-tooltip>
                     <el-tooltip class="item" effect="dark" content="是否禁用" placement="bottom">
-                        <i :class="{'el-icon-lock':isLock, 'el-icon-unlock':!isLock}" @click="lockFn()" />
+                        <i :class="{'el-icon-lock':isLock, 'el-icon-unlock':!isLock}" @click="lockFn()"/>
                     </el-tooltip>
                 </header>
-                <div id="draw-cot" />
-                <Drawer ref="drawer" @addNode="addNode" />
+                <div id="draw-cot"/>
+                <Drawer ref="drawer" @addNode="addNode"/>
             </div>
 
         </section>
@@ -46,14 +46,13 @@
 </template>
 
 <script>
-  import { Graph, Node, Path, Cell } from '@antv/x6'
+  import {Graph, Node, Path, Cell} from '@antv/x6'
   import '@antv/x6-vue-shape'
 
   import database from './components/nodeTheme/database.vue'
   import condition from './components/nodeTheme/condition.vue'
   import onlyout from './components/nodeTheme/onlyOut.vue'
 
-  import Count from './components/Count'
   import DataJson from './data'
   import MenuBar from './components/menuBar'
   import Drawer from './components/drawer'
@@ -137,7 +136,7 @@
 
   export default {
     name: 'App',
-    components: { MenuBar, Drawer, DialogCondition, DialogMysql },
+    components: {MenuBar, Drawer, DialogCondition, DialogMysql},
     data() {
       return {
         graph: '',
@@ -325,8 +324,8 @@
           const deltaY = Math.abs(e.y - s.y)
           const control = Math.floor((deltaY / 3) * 2)
 
-          const v1 = { x: s.x, y: s.y + offset + control }
-          const v2 = { x: e.x, y: e.y - offset - control }
+          const v1 = {x: s.x, y: s.y + offset + control}
+          const v2 = {x: e.x, y: e.y - offset - control}
 
           return Path.normalize(
           `M ${s.x} ${s.y}
@@ -352,7 +351,7 @@
           background: {
             color: '#fffbe6' // 设置画布背景颜色
           },
-              container: document.getElementById('draw-cot'),
+          container: document.getElementById('draw-cot'),
           panning: {
             enabled: true,
             eventTypes: ['leftMouseDown', 'mouseWheel']
@@ -384,7 +383,7 @@
             connector: 'algo-connector',
             connectionPoint: 'anchor',
             anchor: 'center',
-            validateMagnet({ magnet }) {
+            validateMagnet({magnet}) {
               // return magnet.getAttribute('port-group') !== 'top'
 
               // 限制连线配置
@@ -421,39 +420,39 @@
         })
         this.graph = graph
 
-        graph.on('edge:contextmenu', ({ e, x, y, edge, view }) => {
+        graph.on('edge:contextmenu', ({e, x, y, edge, view}) => {
           this.showContextMenu = true
           this.$nextTick(() => {
-            this.$refs.menuBar.initFn(e.offsetX, e.offsetY, { type: 'edge', item: edge })
+            this.$refs.menuBar.initFn(e.offsetX, e.offsetY, {type: 'edge', item: edge})
           })
         })
 
-        graph.on('node:contextmenu', ({ e, x, y, node, view }) => {
+        graph.on('node:contextmenu', ({e, x, y, node, view}) => {
           this.showContextMenu = true
 
           this.$nextTick(() => {
             // this.$refs.menuBar.setItem({ type: 'node', item: node })
             const p = graph.localToPage(x, y)
-            this.$refs.menuBar.initFn(p.x, p.y, { type: 'node', item: node })
+            this.$refs.menuBar.initFn(p.x, p.y, {type: 'node', item: node})
           })
         })
 
-        graph.on('edge:connected', ({ edge }) => {
+        graph.on('edge:connected', ({edge}) => {
           const source = graph.getCellById(edge.source.cell)
           const target = graph.getCellById(edge.target.cell)
 
           // 只允许输入
-          if(target.data.type == 'output'){
+          if (target.data.type == 'output') {
             return graph.removeEdge(edge.id)
           }
 
 
-          if(source.data.type == 'condition'){
-             if(target.data.t === edge.id ||  target.data.f === edge.id ){
-               return   graph.removeEdge(edge.id)
-             }
-              this.$refs.dialogCondition.visible = true
-              this.$refs.dialogCondition.init(source.data, edge)
+          if (source.data.type == 'condition') {
+            if (target.data.t === edge.id || target.data.f === edge.id) {
+              return graph.removeEdge(edge.id)
+            }
+            this.$refs.dialogCondition.visible = true
+            this.$refs.dialogCondition.init(source.data, edge)
           }
 
           edge.attr({
@@ -463,9 +462,9 @@
           })
         })
 
-        graph.on('node:change:data', ({ node }) => {
+        graph.on('node:change:data', ({node}) => {
           const edges = graph.getIncomingEdges(node)
-          const { status } = node.getData()
+          const {status} = node.getData()
           edges?.forEach((edge) => {
             if (status === 'running') {
               edge.attr('line/strokeDasharray', 5)
@@ -480,7 +479,7 @@
       async showNodeStatus(statusList) {
         const status = statusList.shift()
         status?.forEach((item) => {
-          const { id, status } = item
+          const {id, status} = item
           const node = this.graph.getCellById(id)
           const data = node.getData()
           node.setData({
@@ -540,7 +539,7 @@
         })
         this.graph.bindKey(['meta+v', 'ctrl+v'], () => {
           if (!this.graph.isClipboardEmpty()) {
-            const cells = this.graph.paste({ offset: 32 })
+            const cells = this.graph.paste({offset: 32})
             this.graph.cleanSelection()
             this.graph.select(cells)
           }
@@ -556,7 +555,7 @@
         })
       },
       saveFn() {
-        localStorage.setItem('x6Json', JSON.stringify(this.graph.toJSON({ diff: true })))
+        localStorage.setItem('x6Json', JSON.stringify(this.graph.toJSON({diff: true})))
       },
       loadFn() {
         this.timer && clearTimeout(this.timer)
@@ -604,21 +603,24 @@
 </script>
 
 <style>
-    body{
+    body {
         box-sizing: border-box;
         margin: 0;
     }
-    header{
+
+    header {
         display: flex;
         justify-content: flex-end;
         width: 100%;
         height: 50px;
     }
-    header i{
+
+    header i {
         margin: 8px;
         font-size: 30px;
 
     }
+
     #app {
         font-family: "Avenir", Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -633,11 +635,13 @@
         display: block;
         z-index: 0;
     }
+
     @keyframes running-line {
         to {
             stroke-dashoffset: -1000;
         }
     }
+
     @keyframes spin {
         from {
             transform: rotate(0deg);
@@ -645,27 +649,32 @@
         to {
             transform: rotate(360deg);
         }
-    }.x6-node-selected .node {
-         border-color: #1890ff;
-         border-radius: 2px;
-         box-shadow: 0 0 0 4px #d4e8fe;
-     }
+    }
+
+    .x6-node-selected .node {
+        border-color: #1890ff;
+        border-radius: 2px;
+        box-shadow: 0 0 0 4px #d4e8fe;
+    }
+
     .x6-node-selected .node.success {
         border-color: #52c41a;
         border-radius: 2px;
         box-shadow: 0 0 0 4px #ccecc0;
     }
+
     .x6-node-selected .node.failed {
         border-color: #ff4d4f;
         border-radius: 2px;
         box-shadow: 0 0 0 4px #fedcdc;
     }
-    .x6-edge:hover path:nth-child(2){
+
+    .x6-edge:hover path:nth-child(2) {
         stroke: #1890ff;
         stroke-width: 1px;
     }
 
-    .x6-edge-selected path:nth-child(2){
+    .x6-edge-selected path:nth-child(2) {
         stroke: #1890ff;
         stroke-width: 1.5px !important;
     }
@@ -673,15 +682,18 @@
     .section-cot {
         display: flex;
     }
-    .section-cot #container{
+
+    .section-cot #container {
         position: relative;
         flex: 1;
     }
-    .section-cot #container #draw-cot{
+
+    .section-cot #container #draw-cot {
         width: 100%;
         height: 100%;
     }
-    ::-webkit-scrollbar{
+
+    ::-webkit-scrollbar {
         width: 0;
     }
 </style>

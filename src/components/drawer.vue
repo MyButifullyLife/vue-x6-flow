@@ -39,8 +39,9 @@
 </template>
 
 <script>
-  const mouseXY = { 'x': null, 'y': null }
+  const mouseXY = {'x': null, 'y': null}
   import config from './nodeTheme/config'
+
   console.log(config)
 
   export default {
@@ -55,13 +56,13 @@
       }
     },
     mounted() {
-      document.getElementById('container').addEventListener('dragover', function(e) {
+      document.getElementById('container').addEventListener('dragover', function (e) {
         mouseXY.x = e.clientX
         mouseXY.y = e.clientY
       }, false)
     },
     methods: {
-      drag: function(item) {
+      drag: function (item) {
         const parentRect = document.getElementById('container').getBoundingClientRect()
         let mouseInGrid = false
         if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
@@ -71,17 +72,17 @@
 
         }
       },
-      nodeConfig(item,x,y){
+      nodeConfig(item, x, y) {
         let config = ''
-        switch(item.type){
+        switch (item.type) {
           case 'output':
-            config =   {
+            config = {
               x: x,
               y: y,
               width: 180,
               height: 40,
               shape: 'dag-output',
-              data:item,
+              data: item,
               ports: {
                 groups: {
                   bottom: {
@@ -108,64 +109,64 @@
             }
             break;
           case 'database' :
-            config =   {
-            x: x,
-            y: y,
-          width: 180,
-          height: 40,
-          shape: 'dag-node',
-          data:item,
-          ports: {
-            groups: {
-              top: {
-                position: 'top',
-                attrs:
-                {
-                  circle: {
-                    r: 4,
-                    magnet: true,
-                    stroke:
-                    '#C2C8D5',
-                    strokeWidth: 1,
-                    fill: '#fff'
+            config = {
+              x: x,
+              y: y,
+              width: 180,
+              height: 40,
+              shape: 'dag-node',
+              data: item,
+              ports: {
+                groups: {
+                  top: {
+                    position: 'top',
+                    attrs:
+                    {
+                      circle: {
+                        r: 4,
+                        magnet: true,
+                        stroke:
+                        '#C2C8D5',
+                        strokeWidth: 1,
+                        fill: '#fff'
+                      }
+                    }
+                  },
+                  bottom: {
+                    position: 'bottom',
+                    attrs: {
+                      circle: {
+                        r: 4,
+                        magnet:
+                        true,
+                        stroke: '#C2C8D5',
+                        strokeWidth: 1,
+                        fill: '#fff'
+                      }
+                    }
                   }
-                }
-              },
-              bottom: {
-                position: 'bottom',
-                attrs: {
-                  circle: {
-                    r: 4,
-                    magnet:
-                    true,
-                    stroke: '#C2C8D5',
-                    strokeWidth: 1,
-                    fill: '#fff'
+                },
+                items: [
+                  {
+                    id: 'port1',
+                    group: 'top' // 指定分组名称
+                  },
+                  {
+                    id: 'port2',
+                    group: 'bottom' // 指定分组名称
                   }
-                }
+                ]
               }
-            },
-            items: [
-              {
-                id: 'port1',
-                group: 'top' // 指定分组名称
-              },
-              {
-                id: 'port2',
-                group: 'bottom' // 指定分组名称
-              }
-            ]
-          }
-          }
-          break;
+            }
+            break;
           case 'condition' :
-            config =   {
+            config = {
               x: x,
               y: y,
               width: 180,
               height: 40,
               shape: 'dag-condition',
-              data:item,
+              data: item,
               ports: {
                 groups: {
                   top: {
@@ -212,7 +213,7 @@
         }
         return config
       },
-      dragend: function(item) {
+      dragend: function (item) {
         const parentRect = document.getElementById('container').getBoundingClientRect()
         let mouseInGrid = false
         if (((mouseXY.x > parentRect.left) && (mouseXY.x < parentRect.right)) && ((mouseXY.y > parentRect.top) && (mouseXY.y < parentRect.bottom))) {
@@ -220,41 +221,46 @@
         }
         if (mouseInGrid === true) {
           this.$emit('addNode',
-           this.nodeConfig(item, mouseXY.x, mouseXY.y)
+          this.nodeConfig(item, mouseXY.x, mouseXY.y)
           )
         }
       }
     }
   }
 </script>
-<style   scoped>
-    .Ec-x6-icon ::v-deep .el-drawer__body{
+<style scoped>
+    .Ec-x6-icon ::v-deep .el-drawer__body {
         overflow-y: scroll;
     }
-    .Ec-x6-icon ::v-deep .el-drawer__header{
+
+    .Ec-x6-icon ::v-deep .el-drawer__header {
         padding: 0 12px;
         margin-bottom: 0;
         width: 300px;
     }
-    .listBar{
+
+    .listBar {
         font-size: 14px;
     }
 
     .listBar img {
         width: 12px;
     }
-    .arrow{
+
+    .arrow {
         transform: rotate(90deg);
-        transition-duration:.3s;
+        transition-duration: .3s;
     }
-    .listBar-cot{
+
+    .listBar-cot {
         display: inline-block;
         padding-left: 12px;
         box-sizing: border-box;
         width: 100%;
         text-align: left;
     }
-    .listBar-cot .drag-cot{
+
+    .listBar-cot .drag-cot {
         display: inline-flex;
         flex-wrap: wrap;
         align-items: center;
@@ -262,16 +268,19 @@
         width: 62px;
         height: 62px;
     }
-    .listBar-cot .drag-cot span{
+
+    .listBar-cot .drag-cot span {
         display: inline-block;
         width: 50px;
         height: 50px;
     }
-    .listBar-cot .drag-cot span img{
+
+    .listBar-cot .drag-cot span img {
         width: 100%;
         height: 100%;
     }
-    .listBar-cot .drag-cot p{
+
+    .listBar-cot .drag-cot p {
         margin: -2px 0 0;
         text-align: center;
         font-size: 12px;
