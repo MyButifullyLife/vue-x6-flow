@@ -17,6 +17,8 @@ vue2.x+ element +antv-x6
 9、动态节点流向动画
 其余功能可在antv-x6文档自行添加
 
+## 文档地址
+https://x6.antv.vision/zh/docs/api/graph/graph
 ## Project setup
 ```
 yarn install
