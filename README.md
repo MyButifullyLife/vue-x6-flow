@@ -27,6 +27,11 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 ![GIF 2022-1-18 16-51-01](https://user-images.githubusercontent.com/16436933/149902899-b630b119-c39f-45e9-b576-da8d571386be.gif)
 
 
+## 流程图 dag图 思维导图均可实现
+![image](https://user-images.githubusercontent.com/16436933/153532050-5bd5372b-e3a0-43dd-8407-9f0a05b7f59a.png)
+
+
+
 
 ## Project setup
 ```
