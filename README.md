@@ -1,6 +1,5 @@
 # vue-x6-flow
 
-找了一圈流程图和dag图插件，发现每一个的功能都太弱了没办法实现 运维可视化需求，所以自己花心思撸了一个出来。 
 **基于antv-x6 vue版本**
 vue2.x+ element +antv-x6 
 适用于流程图-dag图
@@ -17,7 +16,7 @@ vue2.x+ element +antv-x6
 9、动态节点流向动画
 其余功能可在antv-x6文档自行添加
 
-## 文档地址
+## 文档地址  
 https://x6.antv.vision/zh/docs/api/graph/graph
 
 ## 本项目效果图
@@ -31,7 +30,12 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 ![image](https://user-images.githubusercontent.com/16436933/153532050-5bd5372b-e3a0-43dd-8407-9f0a05b7f59a.png)
 
 
+## 如果文章对你有帮助，那么5块、10块也是爱
+![211862087278cbe7a9dffc846501d1d](https://user-images.githubusercontent.com/16436933/153532904-fc60d8bb-07e5-4afb-978c-179eb1cfcbe2.jpg)
 
+## 有疑问可加QQ
+微信转账30可以让你少掉、少白几根头发
+QQ：251275985
 
 ## Project setup
 ```
