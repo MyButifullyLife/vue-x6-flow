@@ -36,7 +36,7 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 
 ## 有疑问可加QQ
 微信转账30可以让你少掉、少白几根头发
-QQ：251275985
+QQ：251275985  wx：gjh251275985
 
 ## Project setup
 ```
