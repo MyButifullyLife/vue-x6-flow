@@ -31,7 +31,8 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 
 
 ## 如果文章对你有帮助，那么5块、10块也是爱
-![211862087278cbe7a9dffc846501d1d](https://user-images.githubusercontent.com/16436933/153532904-fc60d8bb-07e5-4afb-978c-179eb1cfcbe2.jpg)
+![image](https://user-images.githubusercontent.com/16436933/153533288-32647686-344f-4933-a692-5f4451fe24f6.png)
+
 
 ## 有疑问可加QQ
 微信转账30可以让你少掉、少白几根头发
