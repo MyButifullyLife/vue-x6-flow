@@ -1,7 +1,7 @@
 <template>
     <div class="node " :class="status">
         <img :src="imgCot.logo" alt="">
-        <span class="label">{{itemDetail.label}}</span>
+        <span class="label">{{label}}</span>
         <span class="status">
       <img :src="imgCot[status]" alt="">
     </span>
@@ -17,7 +17,7 @@
     data() {
       return {
         status: 'logo',
-        itemDetail: {},
+        label: '',
         imgCot: {
           logo: 'https://gw.alipayobjects.com/mdn/rms_43231b/afts/img/A*evDjT5vjkX0AAAAAAAAAAAAAARQnAQ',
           success:
@@ -32,11 +32,11 @@
     mounted() {
       const self = this
       const node = this.getNode()
-      this.itemDetail = node.getData();
+      this.label = node.data.label
 
       // 监听数据改变事件
       node.on('change:data', ({current}) => {
-        self.status = current.status
+        self.label = current.label
       })
     }
   }

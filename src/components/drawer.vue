@@ -40,9 +40,7 @@
 
 <script>
   const mouseXY = {'x': null, 'y': null}
-  import config from './nodeTheme/config'
-
-  console.log(config)
+  import config from './config'
 
   export default {
     name: 'Drawer',

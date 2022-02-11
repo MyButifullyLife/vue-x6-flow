@@ -36,9 +36,7 @@
                 <div id="draw-cot"/>
                 <Drawer ref="drawer" @addNode="addNode"/>
             </div>
-
         </section>
-
         <DialogCondition ref="dialogCondition"></DialogCondition>
         <DialogMysql ref="dialogMysql"></DialogMysql>
 
@@ -154,10 +152,15 @@
       this.startFn()
     },
     methods: {
+      getNodeById(id) {
+        return this.graph.getCellById(id)
+      },
       hideFn() {
         this.showContextMenu = false
       },
       initGraph() {
+
+        // 注册节点
         Graph.registerNode(
         'dag-condition',
         {
@@ -489,7 +492,7 @@
         })
         this.timer = setTimeout(() => {
           this.showNodeStatus(statusList)
-        }, 3000)
+        }, 300)
       },
       // 初始化节点/边
       init(data = []) {
@@ -573,18 +576,18 @@
           this.graph.disableKeyboard()
         }
       },
-      contextMenuFn(type, item) {
+      contextMenuFn(type, node) {
         switch (type) {
           case 'remove':
-            if (item.type == 'edge') {
-              this.graph.removeEdge(item.item.id)
-            } else if (item.type == 'node') {
-              this.graph.removeNode(item.item.id)
+            if (node.type == 'edge') {
+              this.graph.removeEdge(node.item.id)
+            } else if (node.type == 'node') {
+              this.graph.removeNode(node.item.id)
             }
             break
           case "source":
             this.$refs.dialogMysql.visible = true
-            this.$refs.dialogMysql.init(item)
+            this.$refs.dialogMysql.init(node)
             break;
         }
 
