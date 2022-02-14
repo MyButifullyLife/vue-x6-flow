@@ -505,7 +505,22 @@
             return graph.removeEdge(edge.id)
           }
 
+
+          // 如果线源头的一端链接桩只允许输入
+           if(/in/.test(edge.source.port)){
+             return graph.removeEdge(edge.id)
+           }
+
+          // 目标一端链接桩只允许输出
+          if(/out/.test(edge.target.port)){
+            return graph.removeEdge(edge.id)
+          }
+
+
           if (source.data.type == 'condition') {
+            console.log(source)
+            console.log(target)
+            console.log(edge)
             if (target.data.t === edge.id || target.data.f === edge.id) {
               return graph.removeEdge(edge.id)
             }

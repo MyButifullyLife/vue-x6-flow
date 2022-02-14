@@ -72,6 +72,9 @@
       },
       nodeConfig(item, x, y) {
         let config = ''
+        const time = new Date().getTime()
+
+        // 链接桩3种状态 1、in | 只允许被连  2、out | 只允许输出  3、any | 不限制
         switch (item.type) {
           case 'output':
             config = {
@@ -99,7 +102,7 @@
                 },
                 items: [
                   {
-                    id: 'port2',
+                    id: `out-${time}`,
                     group: 'bottom' // 指定分组名称
                   }
                 ]
@@ -133,7 +136,7 @@
                 },
                 items: [
                   {
-                    id: 'port2',
+                    id: `in-${time}`,
                     group: 'top' // 指定分组名称
                   }
                 ]
@@ -180,11 +183,11 @@
                 },
                 items: [
                   {
-                    id: 'port1',
+                    id: `in-${time}`,
                     group: 'top' // 指定分组名称
                   },
                   {
-                    id: 'port2',
+                    id: `out-${time}`,
                     group: 'bottom' // 指定分组名称
                   }
                 ]
@@ -231,11 +234,15 @@
                 },
                 items: [
                   {
-                    id: 'port1',
+                    id: `in-${time}`,
                     group: 'top' // 指定分组名称
                   },
                   {
-                    id: 'port2',
+                    id: `out-${time}`,
+                    group: 'bottom' // 指定分组名称
+                  },
+                  {
+                    id: `out-${time}-2`,
                     group: 'bottom' // 指定分组名称
                   }
                 ]
