@@ -50,7 +50,7 @@
   import database from './components/nodeTheme/database.vue'
   import condition from './components/nodeTheme/condition.vue'
   import onlyout from './components/nodeTheme/onlyOut.vue'
-
+  import onlyin from './components/nodeTheme/onlyIn.vue'
   import DataJson from './data'
   import MenuBar from './components/menuBar'
   import Drawer from './components/drawer'
@@ -255,6 +255,57 @@
         true
         )
 
+
+        Graph.registerNode(
+        'dag-onlyIn',
+        {
+          inherit: 'vue-shape',
+          width: 180,
+          height: 36,
+          component: {
+            template: `<onlyin />`,
+            components: {
+              onlyin
+            }
+          },
+          ports: {
+            groups: {
+              top: {
+                position: 'top',
+                attrs:
+                {
+                  circle: {
+                    r: 4,
+                    magnet: true,
+                    stroke:
+                    '#C2C8D5',
+                    strokeWidth: 1,
+                    fill: '#fff'
+                  }
+                }
+              },
+              bottom: {
+                position: 'bottom',
+                attrs: {
+                  circle: {
+                    r: 4,
+                    magnet:
+                    true,
+                    stroke: '#C2C8D5',
+                    strokeWidth: 1,
+                    fill: '#fff'
+                  }
+                }
+              }
+            }
+          }
+        },
+        true
+        )
+
+
+
+
         Graph.registerNode(
         'dag-node',
         {
@@ -449,6 +500,10 @@
             return graph.removeEdge(edge.id)
           }
 
+          // 只允许输出
+          if (source.data.type == 'onlyIn') {
+            return graph.removeEdge(edge.id)
+          }
 
           if (source.data.type == 'condition') {
             if (target.data.t === edge.id || target.data.f === edge.id) {

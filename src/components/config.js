@@ -7,12 +7,21 @@ const config = [
       "name": '输出'
     }
   },
+
   {
     type:'database',
-    label: 'mySql',
+    label: '数据库',
     name:'mySql',
     "data": {
       "name": 'mysql'
+    }
+  },
+  {
+    type:'onlyIn',
+    label: '只允许输入',
+    name:'只允许输入',
+    "data": {
+      "name": '只允许输入'
     }
   },
   {

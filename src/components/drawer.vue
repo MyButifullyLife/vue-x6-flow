@@ -1,7 +1,7 @@
 <template>
     <div class="Ec-x6-icon">
         <el-drawer
-                title="我是标题"
+                title="自定义框框"
                 :visible.sync="visible"
                 :direction="direction"
                 size="300px"
@@ -101,6 +101,40 @@
                   {
                     id: 'port2',
                     group: 'bottom' // 指定分组名称
+                  }
+                ]
+              }
+            }
+            break;
+          case 'onlyIn':
+            config = {
+              x: x,
+              y: y,
+              width: 180,
+              height: 40,
+              shape: 'dag-onlyIn',
+              data: item,
+              ports: {
+                groups: {
+                  top: {
+                    position: 'top',
+                    attrs:
+                    {
+                      circle: {
+                        r: 4,
+                        magnet: true,
+                        stroke:
+                        '#C2C8D5',
+                        strokeWidth: 1,
+                        fill: '#fff'
+                      }
+                    }
+                  },
+                },
+                items: [
+                  {
+                    id: 'port2',
+                    group: 'top' // 指定分组名称
                   }
                 ]
               }
