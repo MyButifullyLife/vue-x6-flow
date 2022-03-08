@@ -38,6 +38,14 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 冠希：微信转账30可以让你少掉、少白几根头发永远跟我一样帅
 QQ：251275985  wx：gjh251275985
 
+
+## antv在vue使用所需要的依赖
+···
+    "@antv/x6": "^1.29.5",
+    "@antv/x6-vue-shape": "^1.3.0",
+    "@vue/composition-api": "^1.4.3",
+···
+
 ## Project setup
 ```
 yarn install
