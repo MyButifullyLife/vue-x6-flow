@@ -626,6 +626,18 @@
           }
           return false
         })
+        // delete
+        this.graph.bindKey(['delete'], () => {
+              const select = this.graph.getSelectedCells()
+              select?.forEach((item) => {
+                  if (/edge/.test(item.shape)) {
+                      this.graph.removeEdge(item.id)
+                  } else {
+                      this.graph.removeNode(item.id)
+                  }
+              })
+              return false
+          })
       },
       saveFn() {
         localStorage.setItem('x6Json', JSON.stringify(this.graph.toJSON({diff: true})))
