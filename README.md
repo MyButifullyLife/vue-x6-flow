@@ -25,8 +25,7 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 ## 流向动画
 ![GIF 2022-1-18 16-51-01](https://user-images.githubusercontent.com/16436933/149902899-b630b119-c39f-45e9-b576-da8d571386be.gif)
 
-## 实际项目效果
-![image](https://user-images.githubusercontent.com/16436933/172275596-0d068620-8439-48a6-b4be-a477ceea9d7c.png)
+
 
 
 ## x6 对于流程图 dag图 思维导图均可实现
