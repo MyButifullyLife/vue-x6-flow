@@ -29,6 +29,7 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 ## 树状图 现成源码
 ![1679362448522](https://user-images.githubusercontent.com/16436933/226499607-5ad1b21d-79c5-45d1-9d31-b59841889eaa.jpg)
 
+![企业微信截图_d2f74ba5-4202-43eb-90e8-9f95bfc3ff2f](https://user-images.githubusercontent.com/16436933/226512037-53dcc958-6112-402d-92b8-cf530b2f531d.png)
 
 
 ## x6 对于流程图 dag图 思维导图均可实现
