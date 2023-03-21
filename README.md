@@ -8,6 +8,7 @@ vue2.x+ element +antv-x6
 1、拖拽布局
 2、右键菜单
 3、保存
+
 4、缩放
 5、多选
 6、快捷键 cv  cx  cz（重做）
@@ -25,6 +26,8 @@ https://x6.antv.vision/zh/docs/api/graph/graph
 ## 流向动画
 ![GIF 2022-1-18 16-51-01](https://user-images.githubusercontent.com/16436933/149902899-b630b119-c39f-45e9-b576-da8d571386be.gif)
 
+## 树状图 现成源码
+![1679362448522](https://user-images.githubusercontent.com/16436933/226499607-5ad1b21d-79c5-45d1-9d31-b59841889eaa.jpg)
 
 
 
