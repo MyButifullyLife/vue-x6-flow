@@ -4,6 +4,10 @@
 vue2.x+ element +antv-x6 
 适用于流程图-dag图
 
+
+# vue3版本地址
+https://github.com/MyButifullyLife/vue-x6-flow-3.0
+
 有以下功能内容：
 1、拖拽布局
 2、右键菜单
