@@ -58,6 +58,13 @@ QQ：251275985  wx：gjh251275985
     
     "@vue/composition-api": "^1.4.3"
     
+    
+    
+    vue.config.js 配置
+    runtimeCompiler: true
+    ![image](https://user-images.githubusercontent.com/16436933/228793431-1a5c9d9e-03c7-4a43-8765-879f5177333c.png)
+
+    
 ···
 
 ## Project setup
