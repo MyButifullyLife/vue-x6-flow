@@ -72,7 +72,9 @@
 
 <script>
 import "@antv/x6-vue-shape";
-import GraphMixin from "./graph";
+import GraphMixin from "./graphMixin";
+import { dataJson, generateUniqueId } from "./config";
+import { DagreLayout } from "@antv/layout";
 
 export default {
   name: "App",
@@ -86,25 +88,109 @@ export default {
     };
   },
   mounted() {
-    // 执行
-    this.startFn();
+    this.init();
   },
   methods: {
     getNodeById(id) {
       return this.graph.getCellById(id);
     },
+
+    createNodeByJson(d) {
+      return {
+        id: `${d.id}`,
+        shape: "dag-common",
+        data: d.data,
+        width: 180,
+        height: 40,
+        ports: {
+          groups: {
+            left: {
+              position: "left",
+              attrs: {
+                circle: {
+                  stroke: "transparent",
+                  strokeWidth: 0,
+                  fill: "transparent",
+                },
+              },
+            },
+
+            right: {
+              position: "right",
+              attrs: {
+                circle: {
+                  stroke: "transparent",
+                  strokeWidth: 0,
+                  fill: "transparent",
+                },
+              },
+            },
+          },
+          items: [
+            {
+              id: `left-${d.id}`,
+              group: "left", // 指定分组名称
+            },
+            {
+              id: `right-${d.id}`,
+              group: "right", // 指定分组名称
+            },
+          ],
+        },
+      };
+    },
+    createEdgeByJson(d, nextItem) {
+      return {
+        source: { cell: d.id, port: "right-" + d.id },
+        target: { cell: nextItem.id, port: "left-" + nextItem.id },
+        shape: "dag-edge",
+        labels: [
+          {
+            attrs: {
+              line: {
+                stroke: "#73d13d",
+              },
+            },
+          },
+        ],
+      };
+    },
     // 初始化节点/边
-    init(data = []) {
-      const cells = [];
-      data.forEach((item) => {
-        if (item.shape === "dag-edge") {
-          cells.push(this.graph.createEdge(item));
-        } else {
-          delete item.component;
-          cells.push(this.graph.createNode(item));
+    init() {
+      const formJson = {
+        nodes: [],
+        edges: [],
+      };
+
+      const fn = (d) => {
+        formJson.nodes.push(this.createNodeByJson(d));
+        if (d.children && d.children.length) {
+          d.children.forEach((nextData) => {
+            nextData.id = generateUniqueId();
+            formJson.edges.push(this.createEdgeByJson(d, nextData));
+            fn(nextData);
+          });
+        } else if (d.leafId) {
+          formJson.edges.push(this.createEdgeByJson(d, { id: d.leafId }));
         }
+      };
+
+      dataJson.forEach((d) => {
+        d.id = generateUniqueId();
+        fn(d);
       });
-      this.graph.resetCells(cells);
+
+      const dagreLayout = new DagreLayout({
+        type: "dagre",
+        rankdir: "LR",
+        ranksep: 100,
+        nodesep: 100,
+      });
+
+      console.log(formJson);
+      const model = dagreLayout.layout(formJson);
+
+      this.graph.fromJSON(model);
     },
     zoomFn(num) {
       this.graph.zoom(num);
@@ -123,10 +209,9 @@ export default {
       );
     },
     loadFn() {
-      this.timer && clearTimeout(this.timer);
-      const x6Json = JSON.parse(localStorage.getItem("x6Json"));
-
-      this.startFn(x6Json.cells);
+      // this.timer && clearTimeout(this.timer);
+      // const x6Json = JSON.parse(localStorage.getItem("x6Json"));
+      // this.startFn(x6Json.cells);
     },
     lockFn() {
       this.isLock = !this.isLock;

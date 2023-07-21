@@ -1,5 +1,6 @@
 import { Graph, Path } from "@antv/x6";
-
+import common from "@/views/dargeDemo/components/node/common";
+// import { DagreLayout } from "@antv/layout";
 export default {
   watch: {},
   beforeMount() {},
@@ -9,6 +10,7 @@ export default {
     this.keyBindFn();
   },
   methods: {
+    layoutFn() {},
     keyBindFn() {
       // copy cut paste
       this.graph.bindKey(["meta+c", "ctrl+c"], () => {
@@ -54,8 +56,8 @@ export default {
         return false;
       });
     },
-    initGraph() {
-      // 注册节点
+    registerNode() {
+      // 注册线条
       Graph.registerEdge(
         "dag-edge",
         {
@@ -74,6 +76,34 @@ export default {
         },
         true
       );
+      // 注册节点
+      Graph.registerNode(
+        "dag-common",
+        {
+          inherit: "vue-shape",
+          component: {
+            template: `<common />`,
+            components: {
+              common,
+            },
+          },
+          ports: {
+            groups: {
+              left: {
+                position: "left",
+              },
+              right: {
+                position: "right",
+              },
+            },
+          },
+        },
+        true
+      );
+    },
+    initGraph() {
+      this.registerNode();
+      // 注册节点
       Graph.registerConnector(
         "algo-connector",
         (s, e) => {
