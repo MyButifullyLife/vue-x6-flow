@@ -4,11 +4,6 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 const routes = [
-  // {
-  //   path: "/",
-  //   name: "home",
-  //   component: HomeView,
-  // },
   {
     path: "/",
     name: "dragDemo",
@@ -17,10 +12,15 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ "@/views/dragDemo"),
   },
+  {
+    path: "/dargeDemo",
+    name: "dargeDemo",
+    component: () => import("@/views/dargeDemo"),
+  },
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: "hash",
   base: process.env.BASE_URL,
   routes,
 });
