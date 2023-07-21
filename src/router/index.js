@@ -5,7 +5,7 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/dragDemo",
+    path: "/",
     name: "dragDemo",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
