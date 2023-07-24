@@ -69,6 +69,9 @@ QQ：251275985  wx：gjh251275985
 
 ## Project setup
 ```
+因为项目是由最新vue-cli创建，运行环境必须要有 yarn
+本地环境没有yarn 可以通过 npm install yarn 下载
+
 yarn install
 ```
 
@@ -85,6 +88,7 @@ yarn build
 ### Lints and fixes files
 ```
 yarn lint
+
 ```
 
 ### Customize configuration
