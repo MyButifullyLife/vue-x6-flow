@@ -6,39 +6,6 @@
           <el-tooltip
             class="item"
             effect="dark"
-            content="长按shift多选"
-            placement="bottom"
-          >
-            <i class="el-icon-crop" />
-          </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="放大"
-            placement="bottom"
-          >
-            <i class="el-icon-zoom-in" @click="zoomFn(0.2)" />
-          </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="缩小"
-            placement="bottom"
-          >
-            <i class="el-icon-zoom-out" @click="zoomFn(-0.2)" />
-          </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="适应屏幕"
-            placement="bottom"
-          >
-            <i class="el-icon-full-screen" @click="centerFn" />
-          </el-tooltip>
-
-          <el-tooltip
-            class="item"
-            effect="dark"
             content="保存"
             placement="bottom"
           >
@@ -52,53 +19,143 @@
           >
             <i class="el-icon-link" @click="loadFn()" />
           </el-tooltip>
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="是否禁用"
-            placement="bottom"
-          >
-            <i
-              :class="{ 'el-icon-lock': isLock, 'el-icon-unlock': !isLock }"
-              @click="lockFn()"
-            />
-          </el-tooltip>
         </header>
         <div id="draw-cot" />
       </div>
     </section>
+    <EditDialog ref="EditDialog" @change="nodeChange"></EditDialog>
   </div>
 </template>
 
 <script>
 import "@antv/x6-vue-shape";
 import GraphMixin from "./graphMixin";
-import { dataJson, generateUniqueId } from "./config";
+import { dataJson, generateUniqueId, statusColor } from "./config";
 import { DagreLayout } from "@antv/layout";
+
+import EditDialog from "./components/drawer";
 
 export default {
   name: "App",
   mixins: [GraphMixin],
+  components: { EditDialog },
   data() {
     return {
       graph: "",
       timer: "",
       isLock: false,
       showContextMenu: false,
+      dataJson: dataJson,
     };
   },
+  beforeDestroy() {
+    this.$EventBus.$off("DargeEditEvent", this.editEvent);
+    this.$EventBus.$off("DargeEditChange", this.nodeChange);
+  },
   mounted() {
-    this.init();
+    this.initLayout();
+    this.$EventBus.$on("DargeEditEvent", this.editEvent);
+    this.$EventBus.$on("DargeEditChange", this.nodeChange);
   },
   methods: {
+    setDargeDemoDataJSON() {
+      // drawer 页面需要用
+      window.$DargeDemoDataJSON = this.dataJson;
+    },
+    findNodeByDataJson(id) {
+      let item = "";
+      const fn = (d) => {
+        if (d.id === id) {
+          item = d;
+        } else {
+          if (d.children && d.children.length) {
+            d.children.forEach((nextData) => {
+              fn(nextData);
+            });
+          }
+        }
+      };
+
+      this.dataJson.forEach((d) => {
+        fn(d);
+      });
+
+      return item;
+    },
+    updateId(target) {
+      target = JSON.parse(JSON.stringify(target));
+
+      target.id = generateUniqueId();
+      const fn = (d) => {
+        d.id = generateUniqueId();
+        if (d.children && d.children.length) {
+          d.children.forEach((nextData) => {
+            fn(nextData);
+          });
+        }
+      };
+      if (target.children && target.children.length) {
+        target.children.forEach((d) => {
+          fn(d);
+        });
+      }
+      return target;
+    },
+    nodeChange(params) {
+      let oldNode = this.findNodeByDataJson(params.node.id);
+      switch (params.type) {
+        case "data":
+          for (let key in oldNode.data) {
+            oldNode.data[key] = params.node.data[key];
+          }
+          // data 可以不需要刷新layout
+          return;
+        case "status":
+          for (let key in oldNode.data) {
+            oldNode.data[key] = params.node.data[key];
+          }
+          break;
+        case "copy":
+          var target = this.findNodeByDataJson(params.targetId);
+          target = this.updateId(target);
+          if (oldNode.children && oldNode.children.length) {
+            oldNode.children.push(target);
+          } else {
+            oldNode.children = [target];
+          }
+          break;
+        case "markTarget":
+          oldNode.markId = params.targetId;
+          break;
+        case "linkCustom":
+          // 链接自定义节点
+          var link = this.updateId(params.linkCustom);
+          console.log(params.linkCustom);
+          if (oldNode.children && oldNode.children.length) {
+            oldNode.children.push(link);
+          } else {
+            oldNode.children = [link];
+          }
+          break;
+      }
+      console.log(this.dataJson, 1231);
+      this.initLayout();
+    },
+    editEvent(node) {
+      this.$refs.EditDialog.init(node);
+    },
     getNodeById(id) {
       return this.graph.getCellById(id);
     },
 
     createNodeByJson(d) {
+      const shape = {
+        exnode: "dag-exnode",
+        common: "dag-common",
+      };
       return {
         id: `${d.id}`,
-        shape: "dag-common",
+        shape: shape[d.type],
         data: d.data,
         width: 180,
         height: 40,
@@ -117,6 +174,7 @@ export default {
 
             right: {
               position: "right",
+
               attrs: {
                 circle: {
                   stroke: "transparent",
@@ -140,23 +198,23 @@ export default {
       };
     },
     createEdgeByJson(d, nextItem) {
+      const color = statusColor[d.data.status];
       return {
         source: { cell: d.id, port: "right-" + d.id },
         target: { cell: nextItem.id, port: "left-" + nextItem.id },
-        shape: "dag-edge",
-        labels: [
-          {
-            attrs: {
-              line: {
-                stroke: "#73d13d",
-              },
-            },
+        router: {
+          name: "manhattan",
+        },
+        attrs: {
+          line: {
+            stroke: color,
+            strokeWidth: 4,
           },
-        ],
+        },
       };
     },
     // 初始化节点/边
-    init() {
+    initLayout() {
       const formJson = {
         nodes: [],
         edges: [],
@@ -166,31 +224,32 @@ export default {
         formJson.nodes.push(this.createNodeByJson(d));
         if (d.children && d.children.length) {
           d.children.forEach((nextData) => {
-            nextData.id = generateUniqueId();
+            !nextData.id && (nextData.id = generateUniqueId());
             formJson.edges.push(this.createEdgeByJson(d, nextData));
             fn(nextData);
           });
-        } else if (d.leafId) {
-          formJson.edges.push(this.createEdgeByJson(d, { id: d.leafId }));
+        }
+        if (d.markId) {
+          formJson.edges.push(this.createEdgeByJson(d, { id: d.markId }));
         }
       };
 
-      dataJson.forEach((d) => {
-        d.id = generateUniqueId();
+      this.dataJson.forEach((d) => {
+        !d.id && (d.id = generateUniqueId());
         fn(d);
       });
 
       const dagreLayout = new DagreLayout({
         type: "dagre",
         rankdir: "LR",
-        ranksep: 100,
-        nodesep: 100,
+        ranksep: 100, // 横间隔
+        nodesep: 100, // 竖间隔
       });
 
-      console.log(formJson);
       const model = dagreLayout.layout(formJson);
 
       this.graph.fromJSON(model);
+      this.setDargeDemoDataJSON();
     },
     zoomFn(num) {
       this.graph.zoom(num);
@@ -203,15 +262,12 @@ export default {
 
     createMenuFn() {},
     saveFn() {
-      localStorage.setItem(
-        "x6Json",
-        JSON.stringify(this.graph.toJSON({ diff: true }))
-      );
+      localStorage.setItem("x6Json", JSON.stringify(this.dataJson));
     },
     loadFn() {
       // this.timer && clearTimeout(this.timer);
-      // const x6Json = JSON.parse(localStorage.getItem("x6Json"));
-      // this.startFn(x6Json.cells);
+      this.dataJson = JSON.parse(localStorage.getItem("x6Json"));
+      this.initLayout();
     },
     lockFn() {
       this.isLock = !this.isLock;

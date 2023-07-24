@@ -12,22 +12,113 @@ export const shapeObj = {
   },
 };
 
+export const statusColor = {
+  success: "#52c41a",
+  error: "#c42027",
+  normal: "#b1b4b1",
+};
+
 // 结构
 export const dataJson = [
   {
-    id: "1",
+    type: "common",
+    data: {
+      status: "success",
+      label: "流程开始1",
+    },
     children: [
       {
-        id: "2",
+        type: "common",
+        data: {
+          status: "normal",
+          label: "流程开始2",
+          form: {
+            text1: "",
+            text2: "",
+            text3: "",
+            text4: "",
+          },
+        },
         children: [
           {
-            id: "2-1",
+            type: "exnode",
+            data: {
+              status: "error",
+              label: "流程开始3",
+            },
           },
         ],
       },
       {
-        id: "3",
-        leafId: "2-1",
+        type: "common",
+        data: {
+          status: "normal",
+          label: "流程开始4",
+        },
+      },
+    ],
+  },
+];
+
+// 自定义json
+export const customJson = [
+  // 自定义1
+  {
+    type: "common",
+    data: {
+      status: "success",
+      label: "自定义1",
+    },
+    children: [
+      {
+        type: "exnode",
+        data: {
+          status: "normal",
+          label: "1-1",
+        },
+      },
+      {
+        type: "exnode",
+        data: {
+          status: "normal",
+          label: "1-2",
+        },
+      },
+    ],
+  },
+  // 自定义2
+  {
+    type: "common",
+    data: {
+      status: "success",
+      label: "自定义2",
+    },
+    children: [
+      {
+        type: "common",
+        data: {
+          status: "normal",
+          label: "2-1",
+          form: {
+            text1: "",
+            text2: "",
+            text3: "",
+            text4: "",
+          },
+        },
+      },
+      {
+        type: "common",
+        data: {
+          status: "normal",
+          label: "2-2",
+          form: {
+            text1: "",
+            text2: "",
+            text3: "",
+            text4: "",
+          },
+        },
       },
     ],
   },

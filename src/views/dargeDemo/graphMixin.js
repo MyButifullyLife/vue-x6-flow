@@ -1,5 +1,6 @@
-import { Graph, Path } from "@antv/x6";
+import { Graph } from "@antv/x6";
 import common from "@/views/dargeDemo/components/node/common";
+import exnode from "@/views/dargeDemo/components/node/exnode";
 // import { DagreLayout } from "@antv/layout";
 export default {
   watch: {},
@@ -8,74 +9,46 @@ export default {
   mounted() {
     this.initGraph();
     this.keyBindFn();
+
+    // 禁止拖动
+    this.graph.enableKeyboard();
   },
   methods: {
     layoutFn() {},
     keyBindFn() {
       // copy cut paste
-      this.graph.bindKey(["meta+c", "ctrl+c"], () => {
-        const cells = this.graph.getSelectedCells();
-        if (cells.length) {
-          this.graph.copy(cells);
-        }
-        return false;
-      });
-      this.graph.bindKey(["meta+x", "ctrl+x"], () => {
-        const cells = this.graph.getSelectedCells();
-        if (cells.length) {
-          this.graph.cut(cells);
-        }
-        return false;
-      });
-      this.graph.bindKey(["meta+v", "ctrl+v"], () => {
-        if (!this.graph.isClipboardEmpty()) {
-          const cells = this.graph.paste({ offset: 32 });
-          this.graph.cleanSelection();
-          this.graph.select(cells);
-        }
-        return false;
-      });
-
-      // undo redo
-      this.graph.bindKey(["meta+z", "ctrl+z"], () => {
-        if (this.graph.history.canUndo()) {
-          this.graph.history.undo();
-        }
-        return false;
-      });
-      // delete
-      this.graph.bindKey(["delete"], () => {
-        const select = this.graph.getSelectedCells();
-        select?.forEach((item) => {
-          if (/edge/.test(item.shape)) {
-            this.graph.removeEdge(item.id);
-          } else {
-            this.graph.removeNode(item.id);
-          }
-        });
-        return false;
-      });
+      // this.graph.bindKey(["meta+c", "ctrl+c"], () => {
+      //   const cells = this.graph.getSelectedCells();
+      //   if (cells.length) {
+      //     this.graph.copy(cells);
+      //   }
+      //   return false;
+      // });
+      // this.graph.bindKey(["meta+x", "ctrl+x"], () => {
+      //   const cells = this.graph.getSelectedCells();
+      //   if (cells.length) {
+      //     this.graph.cut(cells);
+      //   }
+      //   return false;
+      // });
+      // this.graph.bindKey(["meta+v", "ctrl+v"], () => {
+      //   if (!this.graph.isClipboardEmpty()) {
+      //     const cells = this.graph.paste({ offset: 32 });
+      //     this.graph.cleanSelection();
+      //     this.graph.select(cells);
+      //   }
+      //   return false;
+      // });
+      //
+      // // undo redo
+      // this.graph.bindKey(["meta+z", "ctrl+z"], () => {
+      //   if (this.graph.history.canUndo()) {
+      //     this.graph.history.undo();
+      //   }
+      //   return false;
+      // });
     },
     registerNode() {
-      // 注册线条
-      Graph.registerEdge(
-        "dag-edge",
-        {
-          inherit: "edge",
-          attrs: {
-            line: {
-              stroke: "#C2C8D5",
-              strokeWidth: 2,
-              targetMarker: {
-                name: "block",
-                width: 12,
-                height: 8,
-              },
-            },
-          },
-        },
-        true
-      );
       // 注册节点
       Graph.registerNode(
         "dag-common",
@@ -100,31 +73,33 @@ export default {
         },
         true
       );
+      Graph.registerNode(
+        "dag-exnode",
+        {
+          inherit: "vue-shape",
+          component: {
+            template: `<exnode />`,
+            components: {
+              exnode,
+            },
+          },
+          ports: {
+            groups: {
+              left: {
+                position: "left",
+              },
+              right: {
+                position: "right",
+              },
+            },
+          },
+        },
+        true
+      );
     },
     initGraph() {
       this.registerNode();
       // 注册节点
-      Graph.registerConnector(
-        "algo-connector",
-        (s, e) => {
-          const offset = 4;
-          const deltaY = Math.abs(e.y - s.y);
-          const control = Math.floor((deltaY / 3) * 2);
-
-          const v1 = { x: s.x, y: s.y + offset + control };
-          const v2 = { x: e.x, y: e.y - offset - control };
-
-          return Path.normalize(
-            `M ${s.x} ${s.y}
-           L ${s.x} ${s.y + offset}
-           C ${v1.x} ${v1.y} ${v2.x} ${v2.y} ${e.x} ${e.y - offset}
-           L ${e.x} ${e.y}
-          `
-          );
-        },
-        true
-      );
-
       const graph = new Graph({
         grid: {
           size: 10,
@@ -137,6 +112,10 @@ export default {
         },
         background: {
           color: "#eef3fb", // 设置画布背景颜色
+        },
+        interacting: {
+          nodeMovable: false, // 禁止节点和边移动
+          edgeMovable: false,
         },
         container: document.getElementById("draw-cot"),
         panning: {
@@ -167,7 +146,7 @@ export default {
           allowBlank: false,
           allowLoop: false,
           highlight: true,
-          connector: "algo-connector",
+
           connectionPoint: "anchor",
           anchor: "center",
           validateMagnet() {
@@ -178,7 +157,6 @@ export default {
           },
           createEdge() {
             return graph.createEdge({
-              shape: "dag-edge",
               attrs: {
                 line: {
                   strokeDasharray: "5 5",
@@ -230,32 +208,12 @@ export default {
       });
 
       graph.on("edge:connected", ({ edge }) => {
-        // const source = graph.getCellById(edge.source.cell);
-        // const target = graph.getCellById(edge.target.cell);
-
         edge.attr({
           line: {
             strokeDasharray: "",
           },
         });
       });
-
-      // graph.on("node:change:data", ({ node }) => {
-      //   const edges = graph.getIncomingEdges(node);
-      //   const { status } = node.getData();
-      //   edges?.forEach((edge) => {
-      //     if (status === "running") {
-      //       edge.attr("line/strokeDasharray", 5);
-      //       edge.attr(
-      //         "line/style/animation",
-      //         "running-line 30s infinite linear"
-      //       );
-      //     } else {
-      //       edge.attr("line/strokeDasharray", "");
-      //       edge.attr("line/style/animation", "");
-      //     }
-      //   });
-      // });
     },
   },
 };

@@ -5,6 +5,9 @@ import store from "./store";
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 
+import { EventBus } from "./eventBus";
+Vue.prototype.$EventBus = EventBus;
+
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false;
