@@ -19,6 +19,11 @@ const routes = [
     name: "dargeDemo",
     component: () => import("@/views/dargeDemo"),
   },
+  {
+    path: "/demo3",
+    name: "demo3",
+    component: () => import("@/views/demo3"),
+  },
 ];
 
 const router = new VueRouter({

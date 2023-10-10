@@ -12,7 +12,7 @@ export default {
   name: "TestCom",
   methods: {
     goDemo(num) {
-      const router = ["/dragDemo", "/dargeDemo"];
+      const router = ["/dragDemo", "/dargeDemo", "/demo3"];
       this.$router.push(router[num]);
     },
   },
