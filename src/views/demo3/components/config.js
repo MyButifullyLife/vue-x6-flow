@@ -1,9 +1,10 @@
 const config = [
   {
     type: "common",
-    name: "输出",
+    height: 100,
+    width: 200,
     data: {
-      name: "输出",
+      name: "common节点",
     },
   },
 ];

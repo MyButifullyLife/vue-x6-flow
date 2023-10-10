@@ -25,7 +25,6 @@
             :key="index"
             class="drag-cot"
             draggable="true"
-            @drag="drag(item)"
             @dragend="dragend(item)"
           >
             <span>
@@ -44,15 +43,14 @@
 <script>
 const mouseXY = { x: null, y: null };
 import config from "./config";
-
+import { generateUniqueId } from "@/utils";
 export default {
   name: "DrawerCom",
-
   data() {
     return {
       visible: true,
       direction: "ltr",
-      showMore: false,
+      showMore: true,
       configList: config,
     };
   },
@@ -67,53 +65,53 @@ export default {
     );
   },
   methods: {
-    drag: function () {
-      // const parentRect = document
-      //   .getElementById("container")
-      //   .getBoundingClientRect();
-      // let mouseInGrid = false;
-      // if (
-      //   mouseXY.x > parentRect.left &&
-      //   mouseXY.x < parentRect.right &&
-      //   mouseXY.y > parentRect.top &&
-      //   mouseXY.y < parentRect.bottom
-      // ) {
-      //   mouseInGrid = true;
-      // }
+    getPortStyle(text, textColor, borderColor) {
+      return {
+        portNameLabel: {
+          text,
+          fill: textColor,
+          refX: 5,
+          refY: 5,
+        },
+        portBody: {
+          width: 30,
+          height: 20,
+          strokeWidth: 1,
+          fill: borderColor,
+          magnet: true,
+        },
+      };
     },
     nodeConfig(item, x, y) {
       let config = "";
-      const time = new Date().getTime();
+      const id = generateUniqueId();
 
       // 链接桩3种状态 1、in | 只允许被连  2、out | 只允许输出  3、any | 不限制
       switch (item.type) {
         case "common":
           config = {
+            id,
             x: x,
             y: y,
-            width: 180,
-            height: 40,
+            width: item.width,
+            height: item.height,
             shape: `node-${item.type}`,
             data: item,
             ports: {
-              groups: {
-                bottom: {
-                  position: "bottom",
-                  attrs: {
-                    circle: {
-                      r: 4,
-                      magnet: true,
-                      stroke: "#C2C8D5",
-                      strokeWidth: 1,
-                      fill: "#fff",
-                    },
-                  },
-                },
-              },
               items: [
                 {
-                  id: `out-${time}`,
-                  group: "bottom", // 指定分组名称
+                  id: `top-${id}`,
+                  group: "top",
+                },
+                {
+                  id: `out-${id}`,
+                  group: "list", // 指定分组名称
+                  attrs: this.getPortStyle("肯定", "blue", "#a4c8eb"),
+                },
+                {
+                  id: `out2-${id}`,
+                  group: "list", // 指定分组名称
+                  attrs: this.getPortStyle("拒绝", "red", "#f1a6a6"),
                 },
               ],
             },

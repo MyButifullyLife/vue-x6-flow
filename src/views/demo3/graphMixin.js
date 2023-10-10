@@ -41,6 +41,22 @@ export default {
       // });
     },
     registerNode() {
+      Graph.registerPortLayout(
+        "erPortPosition",
+        (portsPositionArgs, elemBBox) => {
+          return portsPositionArgs.map((_, index) => {
+            return {
+              position: {
+                x: index * 35 + 12,
+                y: elemBBox.height - 30,
+              },
+              angle: 0,
+            };
+          });
+        },
+        true
+      );
+
       Graph.registerNode(
         `node-common`,
         {
@@ -61,23 +77,40 @@ export default {
                   circle: {
                     r: 4,
                     magnet: true,
-                    stroke: "#C2C8D5",
-                    strokeWidth: 1,
-                    fill: "#fff",
+                    strokeWidth: 0,
+                    fill: "transparent",
                   },
                 },
               },
-              bottom: {
-                position: "bottom",
+              list: {
+                label: {
+                  position: "center",
+                },
+                markup: [
+                  {
+                    tagName: "rect",
+                    selector: "portBody",
+                  },
+                  {
+                    tagName: "text",
+                    selector: "portNameLabel",
+                  },
+                  {
+                    tagName: "text",
+                    selector: "portTypeLabel",
+                  },
+                ],
                 attrs: {
-                  circle: {
-                    r: 4,
+                  portBody: {
                     magnet: true,
-                    stroke: "#C2C8D5",
-                    strokeWidth: 1,
-                    fill: "#fff",
+                  },
+                  portNameLabel: {
+                    ref: "portBody",
+                    fontSize: 10,
+                    text: "未启动",
                   },
                 },
+                position: "erPortPosition",
               },
             },
           },
@@ -216,6 +249,43 @@ export default {
             type: "edge",
             item: edge,
           });
+        });
+      });
+
+      graph.on("edge:connected", ({ edge }) => {
+        // const source = graph.getCellById(edge.source.cell);
+        const target = graph.getCellById(edge.target.cell);
+
+        // console.log  (target);
+        // console.log(edge);
+        //
+        graph.getEdges().forEach((e) => {
+          if (
+            edge.id !== e.id &&
+            e.getTargetPortId() === edge.getTargetPortId() &&
+            e.getSourcePortId() === edge.getSourcePortId()
+          ) {
+            return graph.removeEdge(edge.id);
+          }
+        });
+
+        if (!target.isNode()) {
+          return graph.removeEdge(edge.id);
+        }
+
+        let stroke = "blue";
+        try {
+          stroke = edge.getSourceCell().getPort(edge.getSourcePortId()).attrs
+            .portBody.fill;
+        } catch (e) {
+          stroke = "blue";
+        }
+
+        edge.attr({
+          line: {
+            strokeDasharray: "",
+            stroke: stroke,
+          },
         });
       });
 
