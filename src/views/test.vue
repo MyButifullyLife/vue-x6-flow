@@ -2,6 +2,7 @@
   <div style="padding-top: 100px">
     <el-button type="primary" @click="goDemo(0)"> demo1</el-button>
     <el-button type="primary" @click="goDemo(1)"> demo2</el-button>
+    <el-button type="primary" @click="goDemo(2)"> demo3</el-button>
 
     <el-button type="primary"> 树形结构demo在vue3项目</el-button>
   </div>
