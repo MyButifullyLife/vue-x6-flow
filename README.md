@@ -1,3 +1,5 @@
+# vue3 和 vue2 两个项目的demo是不同的，可以都下载下来运行查看是否有符合自身业务的demo
+
 # vue-x6-flow
 
 **基于antv-x6 vue版本**
