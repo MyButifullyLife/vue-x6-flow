@@ -1,3 +1,7 @@
+哎，github 总受抽风打不开很烦！
+生命短暂，用梯子吧
+https://laiyun.xyz/#/register?code=SVH5EI6r
+
 # vue3 和 vue2 两个项目的demo是不同的，可以都下载下来运行查看是否有符合自身业务的demo
 
 # vue-x6-flow
